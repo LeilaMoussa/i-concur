@@ -2,7 +2,6 @@
  * Leila Farah Moussa
  * Imane Boudra
  * Khaoula Qassibi
- * Soukaina El Maysour
 
 This code ran sucecsfully on all three test cases.
 */
