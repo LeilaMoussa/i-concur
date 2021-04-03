@@ -1,10 +1,5 @@
-/* Assignment prepared by
- * Leila Farah Moussa
- * Imane Boudra
- * Khaoula Qassibi
- * Soukaina El Maysour
-
-This code ran sucecsfully on all three test cases.
+/* 
+This code ran successfully on all three test cases.
 */
 
 package traffic_sync;
