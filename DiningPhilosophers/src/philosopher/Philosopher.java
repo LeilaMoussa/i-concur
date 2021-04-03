@@ -31,11 +31,11 @@ public abstract class Philosopher extends Thread {
     }
 
     public void timeOut() {
-        int sleep_time;
+        int sleep_time = 1000;
         if (this.status == Status.EAT) {
-            sleep_time = this.eating_time;
+            sleep_time *= this.eating_time;
         } else {
-            sleep_time = this.thinking_time;
+            sleep_time *= this.thinking_time;
         }
 
         try {
@@ -92,19 +92,20 @@ public abstract class Philosopher extends Thread {
 
     @Override
     public void run() {
-        System.out.println(this.toString() + " just started eating.");
         while (true) {
             this.think();
             this.acquireForks();
             this.eat(); // Critical section.
-            this.releaseFork("left");
-            this.releaseFork("right");
+            //this.releaseFork("left");
+            //this.releaseFork("right");
+            this.status = Status.THINK; // superfluous?
+            System.out.println(this.toString() + " stopped eating.");
         }
     }
     
     @Override
     public String toString() {
         return "Philosopher " + this.id + " with status " + this.status +
-                " (Left: " + this.left_fork + ", right: " + this.right_fork + ").";
+                " (Left: " + this.left_fork + ", right: " + this.right_fork + ")";
     }
 }

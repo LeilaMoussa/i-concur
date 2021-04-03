@@ -7,21 +7,22 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import philosopher.FearfulPhilosopher;
 import philosopher.Philosopher;
+import philosopher.Status;
 import philosopher.StubbornPhilosopher;
 
 public class DiningPhilosophers {
 
     public static final int NUMBER = 5;
-    public static final int MAX_EATING_TIME = 5;
-    public static final int MAX_THINKING_TIME = 7;
-    public static final int MIN_TIME = 2; // just arbitrary choices
+    public static final int MAX_EATING_TIME = 3;
+    public static final int MAX_THINKING_TIME = 2;
+    public static final int MIN_TIME = 1; // just arbitrary choices
 
     public static boolean[] forks = {false, false, false, false, false}; // bad
     // this is a tentative data structure. In fact, i will need to represent a resource graph
     // with a more sophisticated data structure (thinking 2d array, but we'll see)
-    
+
     public static ArrayList<Philosopher> philos = new ArrayList<>(NUMBER);
-    
+
     public static int check_cycle() {
         // applies a cycle finding algorithm on the resource graph
         // if a cycle is found, try to return the id of the philospoher to be preempted
@@ -43,11 +44,13 @@ public class DiningPhilosophers {
             if (strategy == 1) {
                 p = new FearfulPhilosopher(i, eat, think);
             } else if (strategy == 2) {
+                System.out.println("part 2 not ready yet.");
                 p = new StubbornPhilosopher(i, eat, think);
+                return;
             }
             philos.add(p);
         }
-        
+
         // initialize resource graph
         // start checking for a cycle
         if (strategy == 2) {
@@ -59,13 +62,12 @@ public class DiningPhilosophers {
                 }
             }
         }
-        
+
         philos.forEach((p) -> {
             p.start();
         });
-        
+
         // No join because they never stop.
-        
     }
 
 }

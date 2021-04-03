@@ -23,11 +23,18 @@ public class FearfulPhilosopher extends Philosopher {
 //        this.occupyFork("left");
 //        this.occupyFork("right");
 
-        while (philos.get(this.id - 1).status == Status.EAT ||
-                philos.get((this.id+1)%NUMBER).status == Status.EAT) {
-            // wait
+        int left_philo = (this.id - 1) % NUMBER;
+        if (left_philo < 0) {
+            left_philo += NUMBER;
         }
-        this.status = Status.THINK;
+        int right_philo = (this.id + 1) % NUMBER;
+        while (philos.get(left_philo).status == Status.EAT ||
+                philos.get(right_philo).status == Status.EAT) {
+            // wait
+            //System.out.println(this.toString() + " is waiting"); // this line makes some things clear
+        }
+        this.status = Status.EAT; // superfluous?
+        System.out.println(this.toString() + " restarted eating.");
     }
     
 }
