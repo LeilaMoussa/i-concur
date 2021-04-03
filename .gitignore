@@ -1,0 +1,13 @@
+GraphAlgorithms/
+
+**/build/
+
+**/dist/
+
+**/nbproject/
+
+**/test/
+
+**/*.xml
+
+**/*.mf
