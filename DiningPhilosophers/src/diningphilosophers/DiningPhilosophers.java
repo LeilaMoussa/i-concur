@@ -17,9 +17,11 @@ public class DiningPhilosophers {
     public static final int MAX_THINKING_TIME = 2;
     public static final int MIN_TIME = 1; // just arbitrary choices
 
-    public static boolean[] forks = {false, false, false, false, false}; // bad
+    public volatile static boolean[] forks = {false, false, false, false, false}; // not very good
     // this is a tentative data structure. In fact, i will need to represent a resource graph
     // with a more sophisticated data structure (thinking 2d array, but we'll see)
+    
+    // volatile keyword is important! somehow without it, starvation happens (or seems to)
 
     public static ArrayList<Philosopher> philos = new ArrayList<>(NUMBER);
 
@@ -50,6 +52,10 @@ public class DiningPhilosophers {
             }
             philos.add(p);
         }
+        
+        philos.forEach((p) -> {
+            p.start();
+        });
 
         // initialize resource graph
         // start checking for a cycle
@@ -68,10 +74,6 @@ public class DiningPhilosophers {
                 }
             }
         }
-
-        philos.forEach((p) -> {
-            p.start();
-        });
 
         // No join because they never stop.
     }
