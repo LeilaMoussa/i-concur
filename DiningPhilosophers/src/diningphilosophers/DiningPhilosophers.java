@@ -46,7 +46,7 @@ public class DiningPhilosophers {
             } else if (strategy == 2) {
                 System.out.println("part 2 not ready yet.");
                 p = new StubbornPhilosopher(i, eat, think);
-                return;
+                return; // temp return
             }
             philos.add(p);
         }
@@ -55,6 +55,12 @@ public class DiningPhilosophers {
         // start checking for a cycle
         if (strategy == 2) {
             while (true) {
+                // i know this isn't the best we can do: checking blindly in a while true loop
+                // better: launch a check whenever some new philosopher takes a fork
+                // could use a global static flag for that
+                
+                // note: pages 306-7 of the textbook talk about a deadlock detection
+                // algorithm that shows which 2 processes are deadlocked
                 int preempt_idx = check_cycle();
                 if (preempt_idx != -1) {
                     Philosopher preempt = philos.get(preempt_idx);

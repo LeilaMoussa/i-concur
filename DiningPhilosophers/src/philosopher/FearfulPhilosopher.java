@@ -20,17 +20,20 @@ public class FearfulPhilosopher extends Philosopher {
 //        }
 //        // not good, need to make these 2 operations atomic somehow
 //        // need a semaphore responsible for these 2 forks
+          // first paragraph on page 313 talks about exactly this problem and solves it somehow
 //        this.occupyFork("left");
 //        this.occupyFork("right");
 
+        // alternative to the above: only eat if the 2 guys next to me aren't eating
+        // but i noticed that this starves 1 or 2 philosophers...
         int left_philo = (this.id - 1) % NUMBER;
-        if (left_philo < 0) {
+        if (left_philo < 0) { // doing this because -1 % 5 = -1 in java lol
             left_philo += NUMBER;
         }
         int right_philo = (this.id + 1) % NUMBER;
+        
         while (philos.get(left_philo).status == Status.EAT ||
                 philos.get(right_philo).status == Status.EAT) {
-            // wait
             //System.out.println(this.toString() + " is waiting"); // this line makes some things clear
         }
         this.status = Status.EAT; // superfluous?

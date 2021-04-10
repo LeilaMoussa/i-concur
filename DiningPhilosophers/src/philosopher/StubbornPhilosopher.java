@@ -25,5 +25,6 @@ public class StubbornPhilosopher extends Philosopher {
     
     public void releaseLeftFork () {
         // if preempted by the main thread, release left only
+        // think of resource graph
     }
 }
