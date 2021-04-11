@@ -5,7 +5,6 @@ package diningphilosophers;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicBoolean;
 import philosopher.FearfulPhilosopher;
 import philosopher.Philosopher;
 import philosopher.StubbornPhilosopher;
@@ -17,7 +16,11 @@ public class DiningPhilosophers {
     public static final int MAX_THINKING_TIME = 2;
     public static final int MIN_TIME = 1; // just arbitrary choices
 
-    public static AtomicBoolean[] forks = new AtomicBoolean[NUMBER];
+    public volatile static boolean[] forks = {false, false, false, false, false};
+    // volatile keyword is important! somehow without it, starvation happens (or seems to)
+    // I think it's fine to keep just a boolean array for part 1, it seems to work decently
+    // and the textbook has a similar solution
+    // part 2 will have a completely different set of DS's
 
     public static ArrayList<Philosopher> philos = new ArrayList<>(NUMBER);
 
@@ -43,10 +46,6 @@ public class DiningPhilosophers {
                 p = new StubbornPhilosopher(i, eat, think);
             }
             philos.add(p);
-        }
-        
-        for (int i = 0; i < NUMBER; i++) {
-            forks[i] = new AtomicBoolean(false);
         }
 
         philos.forEach((p) -> {

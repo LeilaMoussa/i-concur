@@ -2,7 +2,6 @@ package philosopher;
 
 import static diningphilosophers.DiningPhilosophers.forks;
 import static diningphilosophers.DiningPhilosophers.NUMBER;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class Philosopher extends Thread {
 
@@ -56,10 +55,10 @@ public abstract class Philosopher extends Thread {
             idx = this.right_fork;
         }
 
-        if (forks[idx] == new AtomicBoolean(true)) {
+        if (forks[idx] == true) {
             System.err.println("ERROR. " + fork + " fork already occupied, in " + this.toString());
         } else {
-            forks[idx] = new AtomicBoolean(true);
+            forks[idx] = true;
             System.out.println(this.toString() + " occupied fork.");
         }
     }
