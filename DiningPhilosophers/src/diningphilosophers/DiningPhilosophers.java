@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import philosopher.FearfulPhilosopher;
 import philosopher.Philosopher;
-import philosopher.Status;
 import philosopher.StubbornPhilosopher;
 
 public class DiningPhilosophers {
@@ -19,25 +18,21 @@ public class DiningPhilosophers {
 
     public volatile static boolean[] forks = {false, false, false, false, false};
     // volatile keyword is important! somehow without it, starvation happens (or seems to)
-    
     // I think it's fine to keep just a boolean array for part 1, it seems to work decently
     // and the textbook has a similar solution
-    
     // part 2 will have a completely different set of DS's
 
     public static ArrayList<Philosopher> philos = new ArrayList<>(NUMBER);
 
-    public static int check_cycle() {
-        // applies a cycle finding algorithm on the resource graph
-        // if a cycle is found, try to return the id of the philospoher to be preempted
-        return 0; // temporary
-    }
+    public static volatile int alloc_flag = 0; // flags to the main thread whether to launch cycle detection
+    public static ResourceGraph rag;
 
     public static void main(String[] args) {
         System.out.println("Which strategy should be used?\nPrevention (part 1)?"
                 + " Detection (part 2)?\nEnter 1 or 2.");
         System.out.println("Note that the assignment requirements specify that philosopher"
-                + " behavior is an infinite loop, so you should stop the program in a bit.");
+                + " behavior is an infinite loop,\nso you should "
+                + "stop the program yourself in a bit.");
         Scanner in = new Scanner(System.in);
         int strategy = in.nextInt();
         int eat, think;
@@ -48,31 +43,25 @@ public class DiningPhilosophers {
             if (strategy == 1) {
                 p = new FearfulPhilosopher(i, eat, think);
             } else if (strategy == 2) {
-                System.out.println("part 2 not ready yet.");
                 p = new StubbornPhilosopher(i, eat, think);
-                return; // temp return
             }
             philos.add(p);
         }
-        
+
         philos.forEach((p) -> {
             p.start();
         });
 
-        // initialize resource graph
-        // start checking for a cycle
         if (strategy == 2) {
+            rag = new ResourceGraph();
             while (true) {
-                // i know this isn't the best we can do: checking blindly in a while true loop
-                // better: launch a check whenever some new philosopher takes a fork
-                // could use a global static flag for that
-                
-                // note: pages 306-7 of the textbook talk about a deadlock detection
-                // algorithm that shows which 2 processes are deadlocked
-                int preempt_idx = check_cycle();
-                if (preempt_idx != -1) {
-                    Philosopher preempt = philos.get(preempt_idx);
-                    preempt.releaseFork("left");
+                if (alloc_flag == 1) {
+                    int preempt_idx = rag.detectCycle();
+                    if (preempt_idx != -1) {
+                        Philosopher preempt = philos.get(preempt_idx);
+                        preempt.releaseFork("left");
+                        System.out.println(preempt.toString() + " preempted.");
+                    }
                 }
             }
         }

@@ -46,15 +46,7 @@ public abstract class Philosopher extends Thread {
             System.err.println(ie);
         }
     }
-    
-    public boolean isForkFree(String fork) {
-        if (fork.equals("left")) {
-            return !forks[this.left_fork]; // false means free
-        } else {
-            return !forks[this.right_fork];
-        }
-    }
-    
+
     public void occupyFork(String fork) {
         int idx;
         if (fork.equals("left")) {
@@ -62,8 +54,8 @@ public abstract class Philosopher extends Thread {
         } else {
             idx = this.right_fork;
         }
-        
-        if(forks[idx] == true) {
+
+        if (forks[idx] == true) {
             System.err.println("ERROR. " + fork + " fork already occupied, in " + this.toString());
         } else {
             forks[idx] = true;
@@ -73,25 +65,7 @@ public abstract class Philosopher extends Thread {
 
     public abstract void acquireForks();
 
-    public void releaseFork(String fork) {
-        // need to check that it's true first
-        // otherwise, error
-        // this function is similar to occupy, may need to squash them
-        // something like toggleFork, maybe
-        int idx;
-        if (fork.equals("left")) {
-            idx = this.left_fork;
-        } else {
-            idx = this.right_fork;
-        }
-        
-        if(forks[idx] == false) {
-            System.err.println("ERROR. " + fork + " fork already released, in " + this.toString());
-            // this is a bad sign as it could mean 2 adjacent philos were eating at the same time before releasing
-        } else {
-            forks[idx] = false;
-        }
-    }
+    public abstract void releaseFork(String fork);
 
     @Override
     public void run() {
@@ -103,10 +77,10 @@ public abstract class Philosopher extends Thread {
             this.releaseFork("right"); // atomicity doesn't matter much here
         }
     }
-    
+
     @Override
     public String toString() {
-        return "Philosopher " + this.id + " with status " + this.status +
-                " (Left: " + this.left_fork + ", right: " + this.right_fork + ")";
+        return "Philosopher " + this.id + " with status " + this.status
+                + " (Left: " + this.left_fork + ", right: " + this.right_fork + ")";
     }
 }
