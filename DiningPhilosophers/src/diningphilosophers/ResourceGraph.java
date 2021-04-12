@@ -1,3 +1,4 @@
+
 package diningphilosophers;
 
 import static diningphilosophers.DiningPhilosophers.NUMBER;
@@ -10,7 +11,8 @@ public class ResourceGraph {
     // with 2 specific forks (left & right), not the rest
     // and all forks are distinct (fixed position) ==> single-instance reusable resources
     // no need for sophisticated algos or DS's
-    public volatile int[][] allocationMatrix;
+    
+    public volatile int[][] allocationMatrix; // !!
 
     public ResourceGraph() {
         this.allocationMatrix = new int[NUMBER][2]; // 0s by default
@@ -27,7 +29,7 @@ public class ResourceGraph {
         }
         if (cnt == 5) {
             System.out.println("Deadlock detected!");
-            this.display();
+            // this.display();
             // return a random philo id
             return (int) ((Math.random() * (NUMBER - 1))); // range [0; 5[
         }

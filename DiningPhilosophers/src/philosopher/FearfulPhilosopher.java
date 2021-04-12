@@ -15,7 +15,6 @@ public class FearfulPhilosopher extends Philosopher {
         if (forks[this.left_fork] || forks[this.right_fork]) {
             return 1;
         }
-        // this is just an extra safety cushion
         forks[this.left_fork] = true;
         forks[this.right_fork] = true;
         return 0;

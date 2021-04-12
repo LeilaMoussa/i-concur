@@ -1,6 +1,4 @@
-/*
- * 
- */
+
 package diningphilosophers;
 
 import java.util.ArrayList;
@@ -12,8 +10,8 @@ import philosopher.StubbornPhilosopher;
 public class DiningPhilosophers {
 
     public static final int NUMBER = 5;
-    public static final int MAX_EATING_TIME = 3;
-    public static final int MAX_THINKING_TIME = 2;
+    public static final int MAX_EATING_TIME = 4;
+    public static final int MAX_THINKING_TIME = 3;
     public static final int MIN_TIME = 1; // just arbitrary choices
 
     public volatile static boolean[] forks = {false, false, false, false, false};
@@ -56,6 +54,7 @@ public class DiningPhilosophers {
             rag = new ResourceGraph();
             while (true) {
                 if (alloc_flag == 1) {
+                    alloc_flag = 0;
                     int preempt_idx = rag.detectCycle();
                     if (preempt_idx != -1) {
                         Philosopher preempt = philos.get(preempt_idx);

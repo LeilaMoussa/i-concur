@@ -74,7 +74,7 @@ public abstract class Philosopher extends Thread {
             this.acquireForks();
             this.eat(); // Critical section.
             this.releaseFork("left");
-            this.releaseFork("right"); // atomicity doesn't matter much here
+            this.releaseFork("right");
         }
     }
 
