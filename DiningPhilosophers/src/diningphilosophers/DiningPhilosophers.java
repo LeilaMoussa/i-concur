@@ -14,11 +14,8 @@ public class DiningPhilosophers {
     public static final int MAX_THINKING_TIME = 3;
     public static final int MIN_TIME = 1; // just arbitrary choices
 
-    public volatile static boolean[] forks = {false, false, false, false, false};
-    // volatile keyword is important! somehow without it, starvation happens (or seems to)
-    // I think it's fine to keep just a boolean array for part 1, it seems to work decently
-    // and the textbook has a similar solution
-    // part 2 will have a completely different set of DS's
+    //public volatile static boolean[] forks = {false, false, false, false, false};
+    public static VolatileBoolean[] forks = new VolatileBoolean[NUMBER];
 
     public static ArrayList<Philosopher> philos = new ArrayList<>(NUMBER);
 
@@ -46,6 +43,10 @@ public class DiningPhilosophers {
             philos.add(p);
         }
 
+        for (int i = 0; i < NUMBER; i++) {
+            forks[i] = new VolatileBoolean(false);
+        }
+        
         philos.forEach((p) -> {
             p.start();
         });
@@ -65,7 +66,7 @@ public class DiningPhilosophers {
             }
         }
 
-        // No join because they never stop.
+        // No join() because they never stop.
     }
 
 }

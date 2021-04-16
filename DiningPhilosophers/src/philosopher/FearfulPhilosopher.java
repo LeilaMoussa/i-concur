@@ -1,8 +1,6 @@
 package philosopher;
 
-import static diningphilosophers.DiningPhilosophers.NUMBER;
 import static diningphilosophers.DiningPhilosophers.forks;
-import static diningphilosophers.DiningPhilosophers.philos;
 
 public class FearfulPhilosopher extends Philosopher {
 
@@ -11,12 +9,12 @@ public class FearfulPhilosopher extends Philosopher {
     }
 
     public synchronized int occupyForks() {
-        // synchronized looks like it solves the problem of racing for forks
-        if (forks[this.left_fork] || forks[this.right_fork]) {
+        // synchronized == mutual exclusion
+        if (forks[this.left_fork].value || forks[this.right_fork].value) {
             return 1;
         }
-        forks[this.left_fork] = true;
-        forks[this.right_fork] = true;
+        forks[this.left_fork].value = true;
+        forks[this.right_fork].value = true;
         return 0;
     }
 
@@ -24,7 +22,7 @@ public class FearfulPhilosopher extends Philosopher {
     public void acquireForks() {
         int flag;
         while (true) {
-            if (forks[this.left_fork] == false && forks[this.right_fork] == false) {
+            if (!forks[this.left_fork].value && !forks[this.right_fork].value) {
                 flag = this.occupyForks();
                 if (flag == 0) {
                     return;
@@ -42,11 +40,10 @@ public class FearfulPhilosopher extends Philosopher {
             idx = this.right_fork;
         }
 
-        if (forks[idx] == false) {
+        if (!forks[idx].value) {
             System.err.println("ERROR. " + fork + " fork already released, in " + this.toString());
-            // this is a bad sign as it could mean 2 adjacent philos were eating at the same time before releasing
         } else {
-            forks[idx] = false;
+            forks[idx].value = false;
         }
     }
 

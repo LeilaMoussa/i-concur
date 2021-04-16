@@ -55,10 +55,10 @@ public abstract class Philosopher extends Thread {
             idx = this.right_fork;
         }
 
-        if (forks[idx] == true) {
+        if (forks[idx].value == true) {
             System.err.println("ERROR. " + fork + " fork already occupied, in " + this.toString());
         } else {
-            forks[idx] = true;
+            forks[idx].value = true;
             System.out.println(this.toString() + " occupied fork.");
         }
     }
