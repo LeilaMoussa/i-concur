@@ -1,6 +1,5 @@
 package philosopher;
 
-import static diningphilosophers.DiningPhilosophers.forks;
 import static diningphilosophers.DiningPhilosophers.NUMBER;
 
 public abstract class Philosopher extends Thread {

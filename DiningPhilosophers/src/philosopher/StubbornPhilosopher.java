@@ -20,12 +20,12 @@ public class StubbornPhilosopher extends Philosopher {
         forks[this.left_fork].value = true;
         rag.allocationMatrix[this.id][0].value = true;
 
-        // set global flag to launch detection
+        /* Set global flag to launch detection */
         alloc_flag = 1;
 
-        // small delay, the bigger the delay the higher the chance for deadlock
+        /* Small delay of 2s, the bigger the delay the higher the chance for deadlock */
         try {
-            Thread.sleep(2100);
+            Thread.sleep(2000);
         } catch (InterruptedException ie) {
             // Not really important.
         }
@@ -47,13 +47,8 @@ public class StubbornPhilosopher extends Philosopher {
             fork_idx = this.right_fork;
             graph_idx = 1;
         }
-
-        if (forks[fork_idx].value == false
-                || rag.allocationMatrix[this.id][graph_idx].value == false) {
-            System.err.println("ERROR. " + fork + " fork already released, in " + this.toString());
-        } else {
-            forks[fork_idx].value = false;
-            rag.allocationMatrix[this.id][graph_idx].value = false;
-        }
+        
+        forks[fork_idx].value = false;
+        rag.allocationMatrix[this.id][graph_idx].value = false;
     }
 }
