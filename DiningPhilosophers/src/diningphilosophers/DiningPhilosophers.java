@@ -1,4 +1,3 @@
-
 package diningphilosophers;
 
 import java.util.ArrayList;
@@ -9,17 +8,23 @@ import philosopher.StubbornPhilosopher;
 
 public class DiningPhilosophers {
 
+    /* 5 philosophers and 5 forks, as stated by the assignment. */
     public static final int NUMBER = 5;
+    /* These are just arbitary choices for min and max times. */
     public static final int MAX_EATING_TIME = 4;
     public static final int MAX_THINKING_TIME = 3;
-    public static final int MIN_TIME = 1; // just arbitrary choices
+    public static final int MIN_TIME = 1;
 
-    //public volatile static boolean[] forks = {false, false, false, false, false};
+    /* An array of volatile boolean elements that show fork availability. */
     public static VolatileBoolean[] forks = new VolatileBoolean[NUMBER];
 
+    /* The list of Philosophers to be created. */
     public static ArrayList<Philosopher> philos = new ArrayList<>(NUMBER);
 
-    public static volatile int alloc_flag = 0; // flags to the main thread whether to launch cycle detection
+    /* This global variable flags to the main thread whether to launch the 
+     * cycle detection method. */
+    public static volatile int alloc_flag = 0;
+    /* Resource Allocation Graph */
     public static ResourceGraph rag;
 
     public static void main(String[] args) {
@@ -43,20 +48,29 @@ public class DiningPhilosophers {
             philos.add(p);
         }
 
+        /* Initialize the forks with the volatile boolean class we defined. */
         for (int i = 0; i < NUMBER; i++) {
             forks[i] = new VolatileBoolean(false);
         }
-        
+
+        /* Spawn the 5 threads. */
         philos.forEach((p) -> {
             p.start();
         });
 
+        /* This is where the main thread launches the deadlock check
+        * in part 2 (deadlock detection). */
         if (strategy == 2) {
             rag = new ResourceGraph();
             while (true) {
+                /* Only check if a left fork has been allocated. Just a matter
+                 * of efficiency. */
                 if (alloc_flag == 1) {
+                    /* Reset the flag once checking has started. */
                     alloc_flag = 0;
+                    /* The philosopher ID to be preempted. */
                     int preempt_idx = rag.detectCycle();
+                    /* No deadlock has occured if the index returned is invalid. */
                     if (preempt_idx != -1) {
                         Philosopher preempt = philos.get(preempt_idx);
                         preempt.releaseFork("left");
@@ -65,8 +79,7 @@ public class DiningPhilosophers {
                 }
             }
         }
-
-        // No join() because they never stop.
+        // No Thread.join() because they never stop.
     }
 
 }

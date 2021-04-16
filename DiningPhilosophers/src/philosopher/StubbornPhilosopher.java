@@ -1,5 +1,7 @@
 package philosopher;
 
+/* This is for part 2: deadlock detection. */
+
 import static diningphilosophers.DiningPhilosophers.forks;
 import static diningphilosophers.DiningPhilosophers.alloc_flag;
 import static diningphilosophers.DiningPhilosophers.rag;
@@ -12,10 +14,10 @@ public class StubbornPhilosopher extends Philosopher {
 
     @Override
     public void acquireForks() {
-        // should check before setting?
-        
-        while (forks[this.left_fork].value) { }
-        forks[this.left_fork].value = true; // occupy
+
+        while (forks[this.left_fork].value) {
+        }
+        forks[this.left_fork].value = true;
         rag.allocationMatrix[this.id][0].value = true;
 
         // set global flag to launch detection
@@ -27,8 +29,9 @@ public class StubbornPhilosopher extends Philosopher {
         } catch (InterruptedException ie) {
             // Not really important.
         }
-        
-        while (forks[this.right_fork].value) { }
+
+        while (forks[this.right_fork].value) {
+        }
         forks[this.right_fork].value = true;
         rag.allocationMatrix[this.id][1].value = true;
     }
@@ -45,13 +48,12 @@ public class StubbornPhilosopher extends Philosopher {
             graph_idx = 1;
         }
 
-        if (forks[fork_idx].value == false 
-                || rag.allocationMatrix[this.id][graph_idx].value == false) { // shouldn't happen
+        if (forks[fork_idx].value == false
+                || rag.allocationMatrix[this.id][graph_idx].value == false) {
             System.err.println("ERROR. " + fork + " fork already released, in " + this.toString());
         } else {
             forks[fork_idx].value = false;
             rag.allocationMatrix[this.id][graph_idx].value = false;
-            //rag.allocationMatrix = rag.allocationMatrix;
         }
     }
 }

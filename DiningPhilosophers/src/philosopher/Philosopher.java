@@ -33,6 +33,8 @@ public abstract class Philosopher extends Thread {
     }
 
     public void timeOut() {
+        /* Because Thread.sleep() takes time in ms, need to multiply eat/sleep
+         * time by 1000. */
         int sleep_time = 1000;
         if (this.status == Status.EAT) {
             sleep_time *= this.eating_time;
@@ -47,32 +49,21 @@ public abstract class Philosopher extends Thread {
         }
     }
 
-    public void occupyFork(String fork) {
-        int idx;
-        if (fork.equals("left")) {
-            idx = this.left_fork;
-        } else {
-            idx = this.right_fork;
-        }
-
-        if (forks[idx].value == true) {
-            System.err.println("ERROR. " + fork + " fork already occupied, in " + this.toString());
-        } else {
-            forks[idx].value = true;
-            System.out.println(this.toString() + " occupied fork.");
-        }
-    }
-
+    /* Fearful and Stubborn philosopher behave differently
+     * when acquiring or releasing forks, so there are 2 slightly different
+     * implementations. */
     public abstract void acquireForks();
 
     public abstract void releaseFork(String fork);
 
     @Override
     public void run() {
+        /* All threads follow the same pattern of an infinite loops of
+         * thinking & eating. */
         while (true) {
             this.think();
             this.acquireForks();
-            this.eat(); // Critical section.
+            this.eat();
             this.releaseFork("left");
             this.releaseFork("right");
         }
@@ -81,6 +72,6 @@ public abstract class Philosopher extends Thread {
     @Override
     public String toString() {
         return "Philosopher " + this.id + " with status " + this.status
-                + " (Left: " + this.left_fork + ", right: " + this.right_fork + ")";
+                + " (Left fork: " + this.left_fork + ", right fork: " + this.right_fork + ")";
     }
 }

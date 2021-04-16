@@ -1,5 +1,7 @@
 package philosopher;
 
+/* This is for part 1: deadlock prevention. */
+
 import static diningphilosophers.DiningPhilosophers.forks;
 
 public class FearfulPhilosopher extends Philosopher {
@@ -9,7 +11,13 @@ public class FearfulPhilosopher extends Philosopher {
     }
 
     public synchronized int occupyForks() {
-        // synchronized == mutual exclusion
+        /* synchronized keyword guarantees that only one thread executes this function
+         * at any given moment, this is important because occupying needs to be
+         * atomic to prevent deadlock. */
+        
+        /* This check is important because while one thread is executing this function,
+         * another may be waiting to do the same, but shouldn't be allowed
+         * to effectively occupy the forks since the other guy has them. */
         if (forks[this.left_fork].value || forks[this.right_fork].value) {
             return 1;
         }
@@ -21,7 +29,10 @@ public class FearfulPhilosopher extends Philosopher {
     @Override
     public void acquireForks() {
         int flag;
+        /* This is not meant to be an infinite loop, it just allows
+         * for a thread to try to occupy the forks again if it failed. */
         while (true) {
+            /* Both forks need to be free. */
             if (!forks[this.left_fork].value && !forks[this.right_fork].value) {
                 flag = this.occupyForks();
                 if (flag == 0) {
