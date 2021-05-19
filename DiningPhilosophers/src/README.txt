@@ -1,3 +1,6 @@
+(Disclaimer: when we say deadlock prevention throughout this program, we 
+really mean avoidance -- they're quite similar.)
+
 This assignment simulates the behavior of the five philosophers, following
 2 scenarios for handling deadlocks:
 	- Part 1: Deadlock prevention
